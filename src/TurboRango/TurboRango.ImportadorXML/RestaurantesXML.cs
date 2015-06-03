@@ -89,6 +89,26 @@ namespace TurboRango.ImportadorXML
             return res;
         }
 
+        public IList<string> ApenasComUmRestaurante()
+        {
+            var res = from n in restaurantes
+                      group n by n.Attribute("categoria").Value into g
+                      where g != null && g.Count() > 1
+                      select new { 
+                          Categoria = g.Key
+                      };
+
+            //IList<Categoria> resultado = null;
+
+            //foreach (var i in res)
+            //{
+            //    Categoria convertida = (Categoria) Enum.Parse(typeof(Categoria), i);
+            //    resultado.Add(convertida);
+            //}
+
+            return res.Select(r => r.Categoria).ToList();
+        }
+
         public double CapacidadeMaxima()
         {
             return (from n in restaurantes
