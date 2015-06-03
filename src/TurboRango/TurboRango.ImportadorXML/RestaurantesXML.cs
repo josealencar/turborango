@@ -48,6 +48,12 @@ namespace TurboRango.ImportadorXML
                 .Select(n => n.Attribute("nome").Value).OrderBy(n => n).ToList();
         }
 
+        public IList<string> OrdenarPorNomeAsc()
+        {
+            return XDocument.Load(NomeArquivo).Descendants("restaurante")
+                .Select(n => n.Attribute("nome").Value).OrderBy(n => n).ToList();
+        }
+
         public double CapacidadeMedia()
         {
             return (from n in XDocument.Load(NomeArquivo).Descendants("restaurante")

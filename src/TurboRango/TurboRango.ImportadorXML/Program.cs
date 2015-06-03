@@ -26,6 +26,9 @@ namespace TurboRango.ImportadorXML
 
             var nomes = restaurantesXML.ObterNomes();
 
+            var nomesAsc = restaurantesXML.OrdenarPorNomeAsc();
+
+            Console.ReadKey();
             #endregion
         }
     }
