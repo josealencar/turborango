@@ -93,7 +93,7 @@ namespace TurboRango.ImportadorXML
         {
             var res = from n in restaurantes
                       group n by n.Attribute("categoria").Value into g
-                      where g != null && g.Count() > 1
+                      where g != null && g.Count() == 1
                       select new { 
                           Categoria = g.Key
                       };
