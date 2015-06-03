@@ -109,6 +109,19 @@ namespace TurboRango.ImportadorXML
             return res.Select(r => r.Categoria).ToList();
         }
 
+        public IList<string> ApenasMaisPopulares()
+        {
+            var res = from n in restaurantes
+                      group n by n.Attribute("categoria").Value into g
+                      where g != null
+                      orderby g.Count() descending
+                      select new
+                      {
+                          Categoria = g.Key
+                      };
+            return res.Select(r => r.Categoria).Take(2).ToList();
+        }
+
         public double CapacidadeMaxima()
         {
             return (from n in restaurantes

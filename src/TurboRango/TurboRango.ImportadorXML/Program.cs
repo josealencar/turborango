@@ -34,6 +34,8 @@ namespace TurboRango.ImportadorXML
 
             var oportunidade = restaurantesXML.ApenasComUmRestaurante();
 
+            var populares = restaurantesXML.ApenasMaisPopulares();
+
             Console.ReadKey();
             #endregion
         }
