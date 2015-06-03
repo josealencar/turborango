@@ -30,6 +30,8 @@ namespace TurboRango.ImportadorXML
 
             var sites = restaurantesXML.ObterSites();
 
+            var agrupadoPorCategoria = restaurantesXML.AgruparPorCategoria();
+
             Console.ReadKey();
             #endregion
         }

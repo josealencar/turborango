@@ -12,6 +12,7 @@ namespace TurboRango.ImportadorXML
     {
         public string NomeArquivo { get; private set; }
 
+        IEnumerable<XElement> restaurantes;
 
         /// <summary>
         /// Constrói RestaurantesXML a partir do nome do arquivo
@@ -20,6 +21,7 @@ namespace TurboRango.ImportadorXML
         public RestaurantesXML(string nomeArquivo)
         {
             this.NomeArquivo = nomeArquivo;
+            restaurantes = XDocument.Load(NomeArquivo).Descendants("restaurante");
         }
 
         public IList<string> ObterNomes()
@@ -45,13 +47,13 @@ namespace TurboRango.ImportadorXML
             //    ).ToList();
             #endregion
 
-            return XDocument.Load(NomeArquivo).Descendants("restaurante")
+            return restaurantes
                 .Select(n => n.Attribute("nome").Value).OrderBy(n => n).ToList();
         }
 
         public IList<string> OrdenarPorNomeAsc()
         {
-            return XDocument.Load(NomeArquivo).Descendants("restaurante")
+            return restaurantes
                 .Select(n => n.Attribute("nome").Value).OrderBy(n => n).ToList();
         }
 
@@ -59,7 +61,7 @@ namespace TurboRango.ImportadorXML
         {
             #region Query
             return (
-                from n in XDocument.Load(NomeArquivo).Descendants("restaurante").Descendants("contato").Descendants("site")
+                from n in restaurantes.Descendants("contato").Descendants("site")
                 where n.Value != null
                 select n.Value
                 ).ToList();
@@ -73,9 +75,23 @@ namespace TurboRango.ImportadorXML
                         .Average();
         }
 
+        public object AgruparPorCategoria()
+        {
+            var res = from n in restaurantes
+                      group n by n.Attribute("categoria").Value into g
+                      where g != null
+                      select new { 
+                          Categoria = g.Key,
+                          Restaurantes = g.ToList(),
+                          SomatorioCapacidades = g.Sum(x => Convert.ToInt32(x.Attribute("capacidade").Value))
+                      };
+
+            return res;
+        }
+
         public double CapacidadeMaxima()
         {
-            return (from n in XDocument.Load(NomeArquivo).Descendants("restaurante")
+            return (from n in restaurantes
                     select Convert.ToInt32(n.Attribute("capacidade").Value))
                         .Max();
         }
