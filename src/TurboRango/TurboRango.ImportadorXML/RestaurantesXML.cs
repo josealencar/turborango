@@ -121,11 +121,46 @@ namespace TurboRango.ImportadorXML
             return null;
         }
 
+        public object AgrupadosPorBairroPercentual()
+        {
+            return null;
+        }
+
         public double CapacidadeMaxima()
         {
             return (from n in restaurantes
                     select Convert.ToInt32(n.Attribute("capacidade").Value))
                         .Max();
+        }
+
+        //Exercício 2A
+        public IEnumerable<Restaurante> TodosRestaurantes()
+        {
+            var res = from n in restaurantes
+                      let loc = n.Element("localizacao")
+                      let cont = n.Element("contato")
+                      let site = cont != null && cont.Element("site") != null ? cont.Element("site").Value : "Site não disponível"
+                      let telef = cont != null && cont.Element("telefone") != null ? cont.Element("telefone").Value : "Telefone não disponível"
+                      where n != null
+                      select new Restaurante
+                      {
+                          Nome = n.Attribute("nome").Value,
+                          Categoria = (Categoria) Enum.Parse(typeof(Categoria), n.Attribute("categoria").Value, ignoreCase: true),
+                          Capacidade = int.Parse(n.Attribute("capacidade").Value),
+                          Localizacao = new Localizacao 
+                          {
+                              Bairro = loc.Element("bairro").Value,
+                              Latitude = Convert.ToDouble(loc.Element("latitude").Value),
+                              Longitude = Convert.ToDouble(loc.Element("longitude").Value),
+                              Lougradouro = loc.Element("logradouro").Value
+                          },
+                          Contato = new Contato
+                          {
+                              Site = site,
+                              Telefone = telef
+                          }
+                      };
+            return res;
         }
     }
 }
