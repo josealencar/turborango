@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using TurboRango.Dominio;
 
 namespace TurboRango.ImportadorXML
 {
@@ -52,6 +53,17 @@ namespace TurboRango.ImportadorXML
         {
             return XDocument.Load(NomeArquivo).Descendants("restaurante")
                 .Select(n => n.Attribute("nome").Value).OrderBy(n => n).ToList();
+        }
+
+        public IList<string> ObterSites()
+        {
+            #region Query
+            return (
+                from n in XDocument.Load(NomeArquivo).Descendants("restaurante").Descendants("contato").Descendants("site")
+                where n.Value != null
+                select n.Value
+                ).ToList();
+            #endregion
         }
 
         public double CapacidadeMedia()

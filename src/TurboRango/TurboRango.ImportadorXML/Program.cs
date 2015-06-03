@@ -28,6 +28,8 @@ namespace TurboRango.ImportadorXML
 
             var nomesAsc = restaurantesXML.OrdenarPorNomeAsc();
 
+            var sites = restaurantesXML.ObterSites();
+
             Console.ReadKey();
             #endregion
         }
