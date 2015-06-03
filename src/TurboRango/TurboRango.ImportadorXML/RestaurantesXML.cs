@@ -66,7 +66,7 @@ namespace TurboRango.ImportadorXML
             #endregion
         }
 
-        public double CapacidadeMedia()
+        public double CapacidadeMedia()//Já feito em aula
         {
             return (from n in XDocument.Load(NomeArquivo).Descendants("restaurante")
                         select Convert.ToInt32(n.Attribute("capacidade").Value))
