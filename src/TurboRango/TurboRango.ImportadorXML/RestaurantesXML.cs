@@ -99,17 +99,14 @@ namespace TurboRango.ImportadorXML
             return res.ToList();
         }
 
-        public IList<string> ApenasMaisPopulares()
+        public IList<Categoria> ApenasMaisPopulares()
         {
             var res = from n in restaurantes
                       group n by n.Attribute("categoria").Value into g
                       where g != null
                       orderby g.Count() descending
-                      select new
-                      {
-                          Categoria = g.Key
-                      };
-            return res.Select(r => r.Categoria).Take(2).ToList();
+                      select (Categoria)Enum.Parse(typeof(Categoria), g.Key, ignoreCase: true);
+            return res.Take(2).ToList();
         }
 
         public IList<string> BairrosComMenosPizzarias()
