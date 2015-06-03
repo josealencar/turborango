@@ -36,6 +36,8 @@ namespace TurboRango.ImportadorXML
 
             var populares = restaurantesXML.ApenasMaisPopulares();
 
+            var bairros = restaurantesXML.BairrosComMenosPizzarias();
+
             Console.ReadKey();
             #endregion
         }

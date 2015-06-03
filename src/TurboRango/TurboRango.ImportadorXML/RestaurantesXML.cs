@@ -122,6 +122,18 @@ namespace TurboRango.ImportadorXML
             return res.Select(r => r.Categoria).Take(2).ToList();
         }
 
+        public IList<string> BairrosComMenosPizzarias()
+        {
+            //var res = from naaa in restaurantes.Descendants("localizacao").Descendants("bairro")
+            //          orderby naaa.Value
+            //          join restaurante in restaurantes
+            //          on restaurante.Descendants("localizacao").Descendants("bairro") equals naaa into g
+            //          select g.Attributes;
+
+            //return res.Select(r => r.ToString()).OrderBy(r => r).Take(8).ToList();
+            return null;
+        }
+
         public double CapacidadeMaxima()
         {
             return (from n in restaurantes
