@@ -111,11 +111,10 @@ namespace TurboRango.ImportadorXML
 
         public IList<string> BairrosComMenosPizzarias()
         {
-            //var res = from naaa in restaurantes.Descendants("localizacao").Descendants("bairro")
-            //          orderby naaa.Value
-            //          join restaurante in restaurantes
-            //          on restaurante.Descendants("localizacao").Descendants("bairro") equals naaa into g
-            //          select g.Attributes;
+            var res = from n in restaurantes
+                      orderby n.Element("localizacao").Element("bairro").Value
+                      where n.Element("localizacao").Element("bairro") != null
+                      select n.Element("");
 
             //return res.Select(r => r.ToString()).OrderBy(r => r).Take(8).ToList();
             return null;

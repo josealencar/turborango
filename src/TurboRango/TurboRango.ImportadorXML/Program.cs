@@ -40,6 +40,23 @@ namespace TurboRango.ImportadorXML
 
             var criaRestaurantes = restaurantesXML.TodosRestaurantes();
 
+            //Console.ReadKey();
+            #endregion
+
+            #region ADO.NET
+            var connString = @"Data Source=.;Initial Catalog=TurboRango_DEV;UID=sa;PWD=sqlserver";
+            //Integrated Security=true -- Quem usa autenticação do windows
+
+            var acessoAoBanco = new CarinhaQueManipulaOBanco(connString);
+
+            acessoAoBanco.Inserir(new Contato
+            {
+                Site = "www.dogao.gif",
+                Telefone = "555555555"
+            });
+
+            IEnumerable<Contato> contatos = acessoAoBanco.GetContatos();
+
             Console.ReadKey();
             #endregion
         }
