@@ -29,5 +29,7 @@ namespace TurboRango.Web.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<TurboRango.Dominio.Restaurante> Restaurantes { get; set; }
     }
 }

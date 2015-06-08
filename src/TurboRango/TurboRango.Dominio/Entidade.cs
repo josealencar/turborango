@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace TurboRango.Dominio
 {
-    public class Contato : Entidade
+    public abstract class Entidade
     {
-        public string Site { get; set; }
-        public string Telefone { get; set; }
+        public int Id { get; set; }
     }
 }

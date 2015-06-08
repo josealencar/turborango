@@ -161,9 +161,19 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\RestaurantesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201506081927358_InitialCreate.cs" />
+    <Compile Include="Migrations\201506081927358_InitialCreate.Designer.cs">
+      <DependentUpon>201506081927358_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201506082001317_CriarEntidades.cs" />
+    <Compile Include="Migrations\201506082001317_CriarEntidades.Designer.cs">
+      <DependentUpon>201506082001317_CriarEntidades.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -226,6 +236,11 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Restaurantes\Create.cshtml" />
+    <Content Include="Views\Restaurantes\Delete.cshtml" />
+    <Content Include="Views\Restaurantes\Details.cshtml" />
+    <Content Include="Views\Restaurantes\Edit.cshtml" />
+    <Content Include="Views\Restaurantes\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -236,6 +251,20 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TurboRango.Dominio\TurboRango.Dominio.csproj">
+      <Project>{228b8f8b-9ee1-40cb-ad0d-5745a245dd4a}</Project>
+      <Name>TurboRango.Dominio</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201506081927358_InitialCreate.resx">
+      <DependentUpon>201506081927358_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506082001317_CriarEntidades.resx">
+      <DependentUpon>201506082001317_CriarEntidades.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
