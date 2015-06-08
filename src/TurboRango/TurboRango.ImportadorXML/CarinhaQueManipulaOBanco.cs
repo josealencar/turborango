@@ -37,7 +37,7 @@ namespace TurboRango.ImportadorXML
         {
             using (SqlConnection conn = new SqlConnection(this.connectionString))
             {
-                string comandSQL = "SELECT [Site], [Telefone] FROM [dbo].[Contato](nolock)";
+                string comandSQL = "SELECT Site, Telefone FROM [dbo].[Contato](nolock)";
                 using (SqlCommand selecionarContatos = new SqlCommand(comandSQL, conn))
                 {
                     conn.Open();
@@ -46,7 +46,13 @@ namespace TurboRango.ImportadorXML
                         IList<Contato> contatos = null;
                         while (data.Read())
                         {
-                            string site =
+                            string site = data.IsDBNull(0) ? string.Empty : data.GetString(0);
+                            string telefone = data.IsDBNull(1) ? string.Empty : data.GetString(1);
+                            contatos.Add(new Contato
+                            {
+                                Site = site,
+                                Telefone = telefone
+                            });
                         }
                         return contatos.ToList();
                     }
