@@ -11,6 +11,8 @@ namespace TurboRango.ImportadorXML
 {
     public class CarinhaQueManipulaOBanco
     {
+        readonly private string DELETAR = "DELETAR";
+        readonly private string ATUALIZAR = "ATUALIZAR";
         private string connectionString;
 
         public CarinhaQueManipulaOBanco(string connectionString)
@@ -244,5 +246,80 @@ namespace TurboRango.ImportadorXML
             }
         }
 
+        public void Atualizar(int id, Restaurante restaurante)
+        {
+            using (SqlConnection conn = new SqlConnection(this.connectionString))
+            {
+                string comandSQL = "SELECT LocalizacaoId, ContatoId FROM [dbo].[Restaurante](nolock) WHERE Id=@Id";
+                using (SqlCommand selecionarRestaurantes = new SqlCommand(comandSQL, conn))
+                {
+                    selecionarRestaurantes.Parameters.Add("@Id", SqlDbType.VarChar).Value = id;
+                    conn.Open();
+                    using (SqlDataReader data = selecionarRestaurantes.ExecuteReader())
+                    {
+                        int idLocalizacao = data.IsDBNull(0) ? 0 : Convert.ToInt32(data.GetInt32(3));
+                        int idContato = data.IsDBNull(1) ? 0 : Convert.ToInt32(data.GetInt32(4));
+                        Localizacao localizacao = new Localizacao();
+                        if (idLocalizacao != 0) localizacao = GetLocalizacao(idLocalizacao);
+                        Contato contato = new Contato();
+                        if (idContato != 0) contato = GetContato(idContato);
+                        AlterarRestaurante(id, restaurante);
+                        if (idLocalizacao != 0) AlterarLocalizacao(idLocalizacao, localizacao);
+                        if (idContato != 0) AlterarContato(idContato, contato);
+                    }
+                }
+            }
+        }
+
+        private void AlterarContato(int idContato, Contato contato)
+        {
+            using (SqlConnection conn = new SqlConnection(this.connectionString))
+            {
+                string comandSQL = "UPDATE [dbo].[Contato] SET Site=@Site, Telefone=@Telefone WHERE Id=@Id";
+                using (SqlCommand alterarContato = new SqlCommand(comandSQL, conn))
+                {
+                    alterarContato.Parameters.Add("@Site", SqlDbType.VarChar).Value = contato.Site;
+                    alterarContato.Parameters.Add("@Telefone", SqlDbType.VarChar).Value = contato.Telefone;
+                    alterarContato.Parameters.Add("@Id", SqlDbType.VarChar).Value = idContato;
+                    conn.Open();
+                    int resultado = alterarContato.ExecuteNonQuery();
+                }
+            }
+        }
+
+        private void AlterarLocalizacao(int idLocalizacao, Localizacao localizacao)
+        {
+            using (SqlConnection conn = new SqlConnection(this.connectionString))
+            {
+                string comandSQL = "UPDATE [dbo].[Localizacao] SET Bairro=@Bairro, Logradouro=@Logradouro, Latitude=@Latitude, Longitude=@Longitude WHERE Id=@Id";
+                using (SqlCommand alterarLocalizacao = new SqlCommand(comandSQL, conn))
+                {
+                    alterarLocalizacao.Parameters.Add("@Bairro", SqlDbType.VarChar).Value = localizacao.Bairro;
+                    alterarLocalizacao.Parameters.Add("@Logradouro", SqlDbType.VarChar).Value = localizacao.Logradouro;
+                    alterarLocalizacao.Parameters.Add("@Latitude", SqlDbType.VarChar).Value = localizacao.Latitude;
+                    alterarLocalizacao.Parameters.Add("@Longitude", SqlDbType.VarChar).Value = localizacao.Longitude;
+                    alterarLocalizacao.Parameters.Add("@Id", SqlDbType.VarChar).Value = idLocalizacao;
+                    conn.Open();
+                    int resultado = alterarLocalizacao.ExecuteNonQuery();
+                }
+            }
+        }
+
+        private void AlterarRestaurante(int id, Restaurante restaurante)
+        {
+            using (SqlConnection conn = new SqlConnection(this.connectionString))
+            {
+                string comandSQL = "UPDATE [dbo].[Restaurante] SET Nome=@Nome, Capacidade=@Capacidade, Categoria=@Categoria WHERE Id=@Id";
+                using (SqlCommand alterarRestaurante = new SqlCommand(comandSQL, conn))
+                {
+                    alterarRestaurante.Parameters.Add("@Nome", SqlDbType.VarChar).Value = restaurante.Nome;
+                    alterarRestaurante.Parameters.Add("@Capacidade", SqlDbType.VarChar).Value = restaurante.Capacidade;
+                    alterarRestaurante.Parameters.Add("@Categoria", SqlDbType.VarChar).Value = restaurante.Categoria;
+                    alterarRestaurante.Parameters.Add("@Id", SqlDbType.VarChar).Value = id;
+                    conn.Open();
+                    int resultado = alterarRestaurante.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }
