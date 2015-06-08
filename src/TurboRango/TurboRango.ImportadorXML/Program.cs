@@ -97,6 +97,10 @@ namespace TurboRango.ImportadorXML
                 acessoAoBanco.InserirRestaurante(r);
             }
 
+            acessoAoBanco.Remover(50);
+
+
+
             Console.ReadKey();
             #endregion
         }

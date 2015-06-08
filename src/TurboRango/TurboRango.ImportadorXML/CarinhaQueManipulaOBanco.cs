@@ -141,5 +141,19 @@ namespace TurboRango.ImportadorXML
                 }
             }
         }
+
+        internal void Remover(int id)
+        {
+            using (SqlConnection conn = new SqlConnection(this.connectionString))
+            {
+                string comandSQL = "DELETE FROM [dbo].[Restaurante] WHERE Id=@Id";
+                using (SqlCommand inserirContato = new SqlCommand(comandSQL, conn))
+                {
+                    inserirContato.Parameters.Add("@Id", SqlDbType.VarChar).Value = id;
+                    conn.Open();
+                    int resultado = inserirContato.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }
