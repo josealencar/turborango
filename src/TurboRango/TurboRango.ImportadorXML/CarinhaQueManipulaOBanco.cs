@@ -63,6 +63,29 @@ namespace TurboRango.ImportadorXML
             }
         }
 
+        internal Contato GetContato(int id)
+        {
+            using (SqlConnection conn = new SqlConnection(this.connectionString))
+            {
+                string comandSQL = "SELECT Site, Telefone FROM [dbo].[Contato](nolock) WHERE Id=@Id";
+                using (SqlCommand selecionarContatos = new SqlCommand(comandSQL, conn))
+                {
+                    selecionarContatos.Parameters.Add("@Id", SqlDbType.VarChar).Value = id;
+                    conn.Open();
+                    using (SqlDataReader data = selecionarContatos.ExecuteReader())
+                    {
+                        Contato contato = new Contato();
+                        while (data.Read())
+                        {
+                            contato.Site = data.IsDBNull(0) ? string.Empty : data.GetString(0);
+                            contato.Telefone = data.IsDBNull(1) ? string.Empty : data.GetString(1);
+                        }
+                        return contato;
+                    }
+                }
+            }
+        }
+
         internal int InserirLocalizacao(Localizacao localizacao)
         {
             using (SqlConnection conn = new SqlConnection(this.connectionString))
@@ -72,8 +95,8 @@ namespace TurboRango.ImportadorXML
                 {
                     inserirLocalizacao.Parameters.Add("@Bairro", SqlDbType.VarChar).Value = localizacao.Bairro;
                     inserirLocalizacao.Parameters.Add("@Logradouro", SqlDbType.VarChar).Value = localizacao.Logradouro;
-                    inserirLocalizacao.Parameters.Add("@Latitude", SqlDbType.VarChar).Value = localizacao.Latitude;
-                    inserirLocalizacao.Parameters.Add("@Longitude", SqlDbType.VarChar).Value = localizacao.Longitude;
+                    inserirLocalizacao.Parameters.Add("@Latitude", SqlDbType.Decimal).Value = localizacao.Latitude;
+                    inserirLocalizacao.Parameters.Add("@Longitude", SqlDbType.Decimal).Value = localizacao.Longitude;
                     conn.Open();
                     int resultado = Convert.ToInt32(inserirLocalizacao.ExecuteScalar());
                     return resultado;
@@ -97,7 +120,7 @@ namespace TurboRango.ImportadorXML
                             string bairro = data.IsDBNull(0) ? string.Empty : data.GetString(0);
                             string logradouro = data.IsDBNull(1) ? string.Empty : data.GetString(1);
                             double latitude = data.IsDBNull(2) ? 0 : data.GetDouble(2);
-                            double longitude = data.IsDBNull(2) ? 0 : data.GetDouble(3);
+                            double longitude = data.IsDBNull(3) ? 0 : data.GetDouble(3);
                             localizacoes.Add(new Localizacao
                             {
                                 Bairro = bairro,
@@ -107,6 +130,31 @@ namespace TurboRango.ImportadorXML
                             });
                         }
                         return localizacoes;
+                    }
+                }
+            }
+        }
+
+        internal Localizacao GetLocalizacao(int id)
+        {
+            using (SqlConnection conn = new SqlConnection(this.connectionString))
+            {
+                string comandSQL = "SELECT Bairro, Logradouro, Latitude, Longitude FROM [dbo].[Localizacao](nolock) WHERE Id=@Id";
+                using (SqlCommand selecionarContatos = new SqlCommand(comandSQL, conn))
+                {
+                    selecionarContatos.Parameters.Add("@Id", SqlDbType.VarChar).Value = id;
+                    conn.Open();
+                    using (SqlDataReader data = selecionarContatos.ExecuteReader())
+                    {
+                        Localizacao localizacao = new Localizacao();
+                        while (data.Read())
+                        {
+                            localizacao.Bairro = data.IsDBNull(0) ? string.Empty : data.GetString(0);
+                            localizacao.Logradouro = data.IsDBNull(1) ? string.Empty : data.GetString(1);
+                            localizacao.Latitude = data.IsDBNull(2) ? 0 : data.GetDouble(2);
+                            localizacao.Longitude = data.IsDBNull(3) ? 0 : data.GetDouble(3);
+                        }
+                        return localizacao;
                     }
                 }
             }
@@ -155,5 +203,46 @@ namespace TurboRango.ImportadorXML
                 }
             }
         }
+
+        public IEnumerable<Restaurante> Todos()
+        {
+            using (SqlConnection conn = new SqlConnection(this.connectionString))
+            {
+                string comandSQL = "SELECT Nome, Capacidade, Categoria, LocalizacaoId, ContatoId FROM [dbo].[Restaurante](nolock)";
+                using (SqlCommand selecionarRestaurantes = new SqlCommand(comandSQL, conn))
+                {
+                    conn.Open();
+                    using (SqlDataReader data = selecionarRestaurantes.ExecuteReader())
+                    {
+                        List<Restaurante> restaurantes = new List<Restaurante>();
+                        while (data.Read())
+                        {
+                            string nome = data.IsDBNull(0) ? string.Empty : data.GetString(0);
+                            int? capacidade = data.IsDBNull(1) ? Convert.ToInt32(null) : Convert.ToInt32(data.GetInt32(1));
+                            Categoria categoria = (Categoria) Enum.Parse(typeof(Categoria), data.GetString(2), ignoreCase : true);
+                            int idLocalizacao = data.IsDBNull(3) ? 0 : Convert.ToInt32(data.GetInt32(3));
+                            int idContato = data.IsDBNull(4) ? 0 : Convert.ToInt32(data.GetInt32(4));
+                            Localizacao localizacao = new Localizacao();
+                            if (idLocalizacao != 0) localizacao = GetLocalizacao(idLocalizacao);
+                            Contato contato = new Contato();
+                            if (idContato != 0) contato = GetContato(idContato);
+
+                            Restaurante novo = new Restaurante
+                            {
+                                Nome = nome,
+                                Capacidade = capacidade,
+                                Categoria = categoria,
+                                Localizacao = localizacao,
+                                Contato = contato
+                            };
+
+                            restaurantes.Add(novo);
+                        }
+                        return restaurantes;
+                    }
+                }
+            }
+        }
+
     }
 }

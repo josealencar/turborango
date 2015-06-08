@@ -99,7 +99,7 @@ namespace TurboRango.ImportadorXML
 
             acessoAoBanco.Remover(50);
 
-
+            IEnumerable<Restaurante> restaurantes = acessoAoBanco.Todos();
 
             Console.ReadKey();
             #endregion
