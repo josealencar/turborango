@@ -49,13 +49,53 @@ namespace TurboRango.ImportadorXML
 
             var acessoAoBanco = new CarinhaQueManipulaOBanco(connString);
 
-            acessoAoBanco.Inserir(new Contato
-            {
-                Site = "www.dogao.gif",
-                Telefone = "555555555"
-            });
+            #region testeInserirContato
+            //acessoAoBanco.InserirContato(new Contato
+            //{
+            //    Site = "www.dogao.gif",
+            //    Telefone = "555555555"
+            //});
+            #endregion
 
             IEnumerable<Contato> contatos = acessoAoBanco.GetContatos();
+
+            #region testeInserirLocalizacao
+            //acessoAoBanco.InserirLocalizacao(new Localizacao
+            //{
+            //    Bairro = "teste",
+            //    Logradouro = "teste",
+            //    Latitude = 14.25,
+            //    Longitude = 50.1458
+            //});
+            #endregion
+
+            IEnumerable<Localizacao> localizacoes = acessoAoBanco.GetLocalizacoes();
+
+            #region testeInserirRestaurante
+            //acessoAoBanco.InserirRestaurante(new Restaurante
+            //{
+            //    Nome = "TesteRestaurante",
+            //    Capacidade = 10,
+            //    Categoria = Categoria.Comum,
+            //    Localizacao = new Localizacao
+            //    {
+            //        Bairro = "qualquer",
+            //        Logradouro = "qualquer",
+            //        Latitude = 441.000,
+            //        Longitude = 124.865
+            //    },
+            //    Contato = new Contato
+            //    {
+            //        Site = "www.testando.com",
+            //        Telefone = "555471"
+            //    }
+            //});
+            #endregion
+
+            foreach (var r in criaRestaurantes)
+            {
+                acessoAoBanco.InserirRestaurante(r);
+            }
 
             Console.ReadKey();
             #endregion

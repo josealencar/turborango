@@ -138,8 +138,8 @@ namespace TurboRango.ImportadorXML
             var res = from n in restaurantes
                       let loc = n.Element("localizacao")
                       let cont = n.Element("contato")
-                      let site = cont != null && cont.Element("site") != null ? cont.Element("site").Value : "Site não disponível"
-                      let telef = cont != null && cont.Element("telefone") != null ? cont.Element("telefone").Value : "Telefone não disponível"
+                      let site = cont != null && cont.Element("site") != null ? cont.Element("site").Value : null
+                      let telef = cont != null && cont.Element("telefone") != null ? cont.Element("telefone").Value : null
                       where n != null
                       select new Restaurante
                       {
@@ -151,7 +151,7 @@ namespace TurboRango.ImportadorXML
                               Bairro = loc.Element("bairro").Value,
                               Latitude = Convert.ToDouble(loc.Element("latitude").Value),
                               Longitude = Convert.ToDouble(loc.Element("longitude").Value),
-                              Lougradouro = loc.Element("logradouro").Value
+                              Logradouro = loc.Element("logradouro").Value
                           },
                           Contato = new Contato
                           {
