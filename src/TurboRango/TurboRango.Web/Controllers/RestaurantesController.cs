@@ -117,6 +117,14 @@ namespace TurboRango.Web.Controllers
             return RedirectToAction("Index");
         }
 
+        [AllowAnonymous]
+        public JsonResult Restaurantes()
+        {
+            var todos = db.Restaurantes.Include(_ => _.Localizacao).ToList();
+
+            return Json(new { restaurantes = todos}, JsonRequestBehavior.AllowGet);
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
