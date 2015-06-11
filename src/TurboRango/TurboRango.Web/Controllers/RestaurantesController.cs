@@ -29,7 +29,10 @@ namespace TurboRango.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Restaurante restaurante = db.Restaurantes.Find(id);
+            Restaurante restaurante = db.Restaurantes
+                .Include(_ => _.Localizacao).Include(_ => _.Contato).FirstOrDefault(x => x.Id == id);
+            ViewBag.RestauranteLatitude = restaurante.Localizacao.Latitude;
+            ViewBag.RestauranteLongitude = restaurante.Localizacao.Longitude;
             if (restaurante == null)
             {
                 return HttpNotFound();

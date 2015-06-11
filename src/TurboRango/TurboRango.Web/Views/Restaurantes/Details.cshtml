@@ -34,9 +34,92 @@
             @Html.DisplayFor(model => model.Categoria)
         </dd>
 
+        <dt>
+            @Html.DisplayNameFor(model => model.Localizacao.Bairro)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Localizacao.Bairro)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Localizacao.Logradouro)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Localizacao.Logradouro)
+        </dd>
+        @if (Model.Contato != null && Model.Contato.Telefone != null)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.Contato.Telefone)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Contato.Telefone)
+            </dd>
+        }
+        
+        @if (Model.Contato != null && Model.Contato.Site != null)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.Contato.Site)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Contato.Site)
+            </dd>
+        }
+        <dt>
+            @Html.DisplayName("Abrir Mapa")
+        </dt>
+        <dd>
+            <a id="maps" href="http://maps.google.com/?saddr=&daddr=@Model.Localizacao.Latitude,@Model.Localizacao.Longitude" target="_blank">Visualizar tragetória</a>
+            <br /><p>Obs.: A função de tragetória só irá funcionar corretamente se a opção de rastreamento estiver ativa, caso contrário você terá que completar a posição de origem.</p>
+        </dd>
+
     </dl>
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/haversine")
+    <script>
+        var latitudeRestaurante = @ViewBag.RestauranteLatitude;
+        var longitudeRestaurante = @ViewBag.RestauranteLongitude;
+        //alert(qtdRestaurantes);
+
+        var feedback = $('#feedback');
+
+        var gerarRandomico = function (min, max) {
+            return Math.floor(Math.random() * (max - min)) + min;
+        };
+
+        var distancia = function (coord1, coord2) {
+            return haversine(coord1, { latitude: coord2.Latitude, longitude: coord2.Longitude }, { unit: 'km' });
+        };
+
+        var round = function(n) {
+            return Math.round(n * 100) / 100;
+        };
+
+        navigator.geolocation.getCurrentPosition(
+            function success(resultado) {
+
+                var posicaoAtual = resultado.coords;
+                var link = "http://maps.google.com/?saddr=";
+                link += posicaoAtual.latitude +","+ posicaoAtual.longitude;
+                link += "&daddr=" + latitudeRestaurante + "," + longitudeRestaurante;
+
+                $('a[id=maps]').attr('href', link);
+            },
+            function error(err) {
+                console.error(err);
+            },
+            { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+        );
+    </script>
+}
