@@ -79,6 +79,41 @@
         </dd>
 
     </dl>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Adicionar Comentários" class="btn btn-default" />
+        </div>
+    </div>
+    <br />
+    <br />
+
+    <form id="FeedBack" name="FeedBack" action="javascript:AdicionarComentario()" method="post">
+        <input name="Usuario" type="hidden" value="@ViewBag.UsuarioLogado" />
+        <input name="DataFeedBack" type="datetime" hidden="hidden" value="@ViewBag.DataFeedBack" />
+        <input name="IdRestaurante" type="hidden" value="@Html.DisplayFor(model => model.Id)" />
+
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label for="Nota" class="control-label col-md-2">Nota</label>
+                <div class="col-md-10">
+                    <input class="form-control" id="Nota" name="Nota" type="number" min="0" max="5" required="required" title="Limite entre 0 e 5" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="Comentario" class="control-label col-md-2">Comentario</label>
+                <div class="col-md-10">
+                    <textarea class="form-control" id="Comentario" name="Comentario"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Adicionar" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    </form>
+
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
@@ -88,8 +123,8 @@
 @section Scripts{
     @Scripts.Render("~/bundles/haversine")
     <script>
-        var latitudeRestaurante = @ViewBag.RestauranteLatitude;
-        var longitudeRestaurante = @ViewBag.RestauranteLongitude;
+    var latitudeRestaurante = @ViewBag.RestauranteLatitude;
+    var longitudeRestaurante = @ViewBag.RestauranteLongitude;
         //alert(qtdRestaurantes);
 
         var feedback = $('#feedback');
@@ -121,5 +156,16 @@
             },
             { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
         );
+
+        function AdicionarComentario(){
+            var dados = $('form[id=FeedBack]');
+            console.log(dados);
+            $.ajax({
+                url: '/Comentarios/Comentarios',
+                dataType : 'JSON',
+                type: 'POST',
+                data: dados.serialize()
+            }).done(function(res){console.log(res);}).fail(function(res){console.log(res);});
+        };
     </script>
 }

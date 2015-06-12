@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using TurboRango.Dominio;
 using TurboRango.Web.Models;
 
@@ -33,6 +34,8 @@ namespace TurboRango.Web.Controllers
                 .Include(_ => _.Localizacao).Include(_ => _.Contato).FirstOrDefault(x => x.Id == id);
             ViewBag.RestauranteLatitude = restaurante.Localizacao.Latitude;
             ViewBag.RestauranteLongitude = restaurante.Localizacao.Longitude;
+            ViewBag.UsuarioLogado = User.Identity.Name; //Recupera e-mail(nome) do usuario logado
+            ViewBag.DataFeedBack = DateTime.Now.ToString("dd/MM/yyyy");
             if (restaurante == null)
             {
                 return HttpNotFound();

@@ -10,7 +10,8 @@ namespace TurboRango.Dominio
     {
         public int IdRestaurante { get; set; }
         public double Nota { get; set; }
-        public DateTime DataFeedBack { get; set; }
+        public DateTime? DataFeedBack { get; set; }
         public string Comentario { get; set; }
+        public string Usuario { get; set; }
     }
 }
