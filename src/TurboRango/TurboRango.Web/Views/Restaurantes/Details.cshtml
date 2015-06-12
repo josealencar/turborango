@@ -82,13 +82,13 @@
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Adicionar Comentários" class="btn btn-default" />
+            <input type="submit" onclick="MostrarFormulario()" value="Adicionar Comentários" class="btn btn-default" />
         </div>
     </div>
     <br />
     <br />
 
-    <form id="FeedBack" name="FeedBack" action="javascript:AdicionarComentario()" method="post">
+    <form hidden="hidden" id="FeedBack" name="FeedBack" action="javascript:AdicionarComentario()" method="post">
         <input name="Usuario" type="hidden" value="@ViewBag.UsuarioLogado" />
         <input name="DataFeedBack" type="datetime" hidden="hidden" value="@ViewBag.DataFeedBack" />
         <input name="IdRestaurante" type="hidden" value="@Html.DisplayFor(model => model.Id)" />
@@ -166,6 +166,10 @@
                 type: 'POST',
                 data: dados.serialize()
             }).done(function(res){console.log(res);}).fail(function(res){console.log(res);});
+        };
+
+        function MostrarFormulario(){
+            $('form[id=FeedBack]').removeAttr('hidden');
         };
     </script>
 }
