@@ -54,8 +54,8 @@ namespace TurboRango.Web.Controllers
         public ActionResult Create([Bind(Include = "Id,Nome,Capacidade,Categoria,Contato,Localizacao")] Restaurante restaurante)
         {
             // Solução ruim, mas necessária (não entendo o que está acontecendo):
-            ModelState.Remove("Contato.Id");
-            ModelState.Remove("Localizacao.Id");
+            //ModelState.Remove("Contato.Id");
+            //ModelState.Remove("Localizacao.Id");
             if (ModelState.IsValid)
             {
                 db.Restaurantes.Add(restaurante);
@@ -90,6 +90,10 @@ namespace TurboRango.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (restaurante.Contato.Id != null) db.Entry(restaurante.Contato).State = EntityState.Modified;
+                else if (restaurante.Contato != null) db.Contatos.Add(restaurante.Contato);
+                if (restaurante.Localizacao.Id != null) db.Entry(restaurante.Localizacao).State = EntityState.Modified;
+                else if (restaurante.Localizacao != null) db.Localizacoes.Add(restaurante.Localizacao);
                 db.Entry(restaurante).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -118,6 +122,8 @@ namespace TurboRango.Web.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Restaurante restaurante = db.Restaurantes.Find(id);
+            if (restaurante.Contato != null) db.Entry(restaurante.Contato).State = EntityState.Deleted;
+            if (restaurante.Localizacao != null) db.Entry(restaurante.Localizacao).State = EntityState.Deleted;
             db.Restaurantes.Remove(restaurante);
             db.SaveChanges();
             return RedirectToAction("Index");

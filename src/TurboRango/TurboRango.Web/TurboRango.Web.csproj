@@ -178,6 +178,10 @@
     <Compile Include="Migrations\201506112232378_CreateFeedBack.Designer.cs">
       <DependentUpon>201506112232378_CreateFeedBack.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201506120543337_IdNullable.cs" />
+    <Compile Include="Migrations\201506120543337_IdNullable.Designer.cs">
+      <DependentUpon>201506120543337_IdNullable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -277,6 +281,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201506112232378_CreateFeedBack.resx">
       <DependentUpon>201506112232378_CreateFeedBack.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506120543337_IdNullable.resx">
+      <DependentUpon>201506120543337_IdNullable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
