@@ -174,6 +174,10 @@
     <Compile Include="Migrations\201506082001317_CriarEntidades.Designer.cs">
       <DependentUpon>201506082001317_CriarEntidades.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201506112232378_CreateFeedBack.cs" />
+    <Compile Include="Migrations\201506112232378_CreateFeedBack.Designer.cs">
+      <DependentUpon>201506112232378_CreateFeedBack.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -203,6 +207,8 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
+    <None Include="Views\Shared\EditorTemplates\Contato.cshtml" />
+    <None Include="Views\Shared\EditorTemplates\Localizacao.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -268,6 +274,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201506082001317_CriarEntidades.resx">
       <DependentUpon>201506082001317_CriarEntidades.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506112232378_CreateFeedBack.resx">
+      <DependentUpon>201506112232378_CreateFeedBack.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
